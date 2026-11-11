@@ -1,0 +1,8 @@
+//
+// Created by elder on 11/10/2026.
+//
+
+#ifndef TROPHYSYSTEM_TROPHY_SYSTEM_H
+#define TROPHYSYSTEM_TROPHY_SYSTEM_H
+
+#endif //TROPHYSYSTEM_TROPHY_SYSTEM_H
