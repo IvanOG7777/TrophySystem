@@ -24,12 +24,31 @@ inline vec2 operator+(vec2 &a, vec2 &b) {
     return {a.x + b.x, a.y + b.y};
 }
 
+inline void operator+=(vec2 &a, vec2 &b) {
+    a.x += b.x;
+    a.y += b.y;
+}
+
+inline vec2 operator+=(vec2 &a, float val) {
+    a.x += val;
+    a.y += val;
+}
+
 inline vec2 operator-(vec2 &a, vec2 &b) {
     return {a.x - b.x, a.y - b.y};
 }
 
 inline vec2 operator*(vec2 &a, vec2 &b) {
     return {a.x * b.x, a.y * b.y};
+}
+
+inline vec2 operator*(vec2 &a, float val) {
+    return {a.x * val, a.y * val};
+}
+
+inline void operator*=(vec2 &a, float val) {
+    a.x *= val;
+    a.y *= val;
 }
 
 inline float distance (vec2 &a, vec2 &b) {

@@ -17,8 +17,18 @@ int main() {
 
     vec2 c = a + b;
     float dist = distance(a, b);
-    std:: cout << "Distace is: " << dist << std:: endl;
+    std:: cout << "Distance is: " << dist << std:: endl;
 
     std:: cout << c.x << ", " << c.y << std:: endl;
+
+    Projectile projectile;
+
+    projectile.set_position(c);
+    projectile.set_velocity(2, 0);
+    projectile.set_acceleration(2,0);
+    projectile.set_mass(10);
+
+    projectile.integrate(1.0f);
+    std:: cout << "Projectile position: " << projectile.get_position().x << ", " << projectile.get_position().y << std:: endl;
     return 0;
 }

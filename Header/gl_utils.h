@@ -5,8 +5,8 @@
 #ifndef TROPHYSYSTEM_GL_UTILS_H
 #define TROPHYSYSTEM_GL_UTILS_H
 
-Window *create_window (double w, double h) {
-    
-}
+// Window *create_window (double w, double h) {
+//
+// }
 
 #endif //TROPHYSYSTEM_GL_UTILS_H
