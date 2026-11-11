@@ -3,7 +3,12 @@
 //
 
 #include <iostream>
+
+#include "../Header/gl_utils.h"
 #include "../Header/vec2.h"
+#include "../Header/projectile.h"
+#include "../Header/tank.h"
+#include "../Header/trophy_system.h"
 
 int main() {
 
