@@ -51,6 +51,10 @@ inline void operator*=(vec2 &a, float val) {
     a.y *= val;
 }
 
+inline vec2 operator/(vec2 &a, float val) {
+    return {a.x / val, a.y / val};
+}
+
 inline float distance (vec2 &a, vec2 &b) {
     float x = a.x - b.x;
     float y = a.y - b.y;

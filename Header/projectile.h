@@ -7,13 +7,18 @@
 
 #include  "../Header/vec2.h"
 
+enum Status {
+    IDLE,
+    FLYING,
+    IMPACTED,
+    EXPIRED,
+};
+
 class Projectile {
 private:
-    bool is_hit;
-    bool hit_target;
-    float mass;
-    float inverse_mass;
     float damage;
+    Status status;
+    vec2 target_location;
     vec2 position;
     vec2 velocity;
     vec2 acceleration;
@@ -24,7 +29,9 @@ public:
 
     void integrate(float duration);
 
-    void set_mass(float passed_mass);
+    vec2 directional_vector();
+    float magnitude();
+    vec2 normal();
     void set_damage(float passed_damage);
 
     void set_position(float passed_x, float passed_y);

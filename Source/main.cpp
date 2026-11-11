@@ -26,9 +26,8 @@ int main() {
     projectile.set_position(c);
     projectile.set_velocity(2, 0);
     projectile.set_acceleration(2,0);
-    projectile.set_mass(10);
 
-    projectile.integrate(1.0f);
+    projectile.integrate(1.2f);
     std:: cout << "Projectile position: " << projectile.get_position().x << ", " << projectile.get_position().y << std:: endl;
     return 0;
 }

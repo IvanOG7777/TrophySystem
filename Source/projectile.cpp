@@ -3,41 +3,53 @@
 //
 
 #include <cassert>
+#include <cmath>
 #include "../Header/projectile.h"
+#include "../Header/vec2.h"
 
 Projectile::Projectile() {
-    is_hit = false;
-    hit_target = false;
-    mass = 0.0f;
-    inverse_mass = 0.0f;
     damage = 0.0f;
+    status = IDLE;
+    target_location = {};
     position = {};
     velocity = {};
     acceleration = {};
-
 }
 
 void Projectile::integrate(float duration) {
-    if (inverse_mass <= 0.0f) return;
 
     assert(duration > 0.0f);
 
-    vec2 resulting_acceleration = acceleration * inverse_mass;
+    if (Projectile::status != FLYING) return;
 
-    vec2 scaled_acceleration = resulting_acceleration * duration;
+    vec2 scaled_acceleration = acceleration * duration;
 
-    velocity += scaled_acceleration;
+    velocity = velocity + scaled_acceleration;
 
     vec2 scaled_velocity = velocity * duration;
 
-    position += scaled_velocity;
-
-    velocity *= duration;
+    position = position + scaled_velocity;
 }
 
-void Projectile:: set_mass(float passed_mass) {
-    mass = passed_mass;
-    inverse_mass = 1/passed_mass;
+vec2 Projectile::directional_vector() {
+    return target_location - position;
+}
+
+
+float Projectile::magnitude() {
+    vec2 dir_vec = directional_vector();
+
+    float x = dir_vec.x * dir_vec.x;
+    float y = dir_vec.y * dir_vec.y;
+
+    return sqrtf(x +y);
+}
+
+vec2 Projectile::normal() {
+    vec2 dir_vec = directional_vector();
+    float mag = magnitude();
+
+    return dir_vec / mag;
 }
 
 void Projectile::set_damage(float passed_damage) {
@@ -54,7 +66,6 @@ void Projectile::set_position(const vec2 &passed_position) {
 vec2 Projectile::get_position() {
     return position;
 }
-
 
 void Projectile::set_velocity(const float passed_x, const float passed_y) {
     velocity.x = passed_x;
