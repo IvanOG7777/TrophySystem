@@ -15,7 +15,7 @@ Projectile::Projectile() {
     damage = 0.0f;
     speed = 0.0f;
     time_to_target = 10.0f; // 10 units of x time
-    status = IDLE;
+    status = FLYING;
     target_location = {};
     position = {};
     velocity = {};
@@ -27,8 +27,6 @@ void Projectile::integrate(float duration) {
     assert(duration > 0.0f);
 
     if (Projectile::status != FLYING) return;
-
-    velocity = velocity + acceleration * duration;
 
     position = position + velocity * duration;
 }
@@ -56,7 +54,7 @@ void Projectile::follow_target() {
 
 bool Projectile::check_collision() {
     float distance_squared = get_distance_squared(target_location, position);
-    return distance_squared <= 0.001 * 0.001;
+    return distance_squared <= 0.001f * 0.001f;
 }
 
 void Projectile::update_projectile(float duration) {
@@ -154,4 +152,20 @@ void Projectile::set_acceleration(const vec2 &passed_acceleration) {
 }
 vec2 Projectile::get_acceleration() {
     return acceleration;
+}
+
+void Projectile::set_target(vec2 &passed_target) {
+    target_location = passed_target;
+}
+
+vec2 Projectile::get_target() {
+    return target_location;
+}
+
+float Projectile::get_time_to_target() {
+    return time_to_target;
+}
+
+Status Projectile::get_status() {
+    return status;
 }

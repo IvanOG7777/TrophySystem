@@ -51,7 +51,12 @@ public:
     void set_acceleration(const vec2 &passed_acceleration);
     vec2 get_acceleration();
 
+    void set_target(vec2 &passed_target);
+    vec2 get_target();
 
+    float get_time_to_target();
+
+    Status get_status();
 
 };
 
