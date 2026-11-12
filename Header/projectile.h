@@ -31,6 +31,8 @@ public:
 
     void integrate(float duration);
     void follow_target(float duration);
+    bool check_collision();
+    void update_projectile(float duration);
 
     vec2 get_directional_vector();
     float get_magnitude();

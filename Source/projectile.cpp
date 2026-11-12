@@ -5,6 +5,9 @@
 #include <cassert>
 #include <cmath>
 #include "../Header/projectile.h"
+
+#include <ctime>
+
 #include "../Header/vec2.h"
 
 Projectile::Projectile() {
@@ -24,13 +27,9 @@ void Projectile::integrate(float duration) {
 
     if (Projectile::status != FLYING) return;
 
-    vec2 scaled_acceleration = acceleration * duration;
+    velocity = velocity +  acceleration * duration;
 
-    velocity = velocity + scaled_acceleration;
-
-    vec2 scaled_velocity = velocity * duration;
-
-    position = position + scaled_velocity;
+    position = position + velocity * duration;
 }
 
 vec2 Projectile::get_directional_vector() {
@@ -47,19 +46,10 @@ void Projectile::follow_target(float duration) {
 
     float distance = std::sqrtf(distance_squared);
 
-    // check if distance is small value
-    // if it is we have hit the target
-    // OR projectile hits if its time_to_target is less than or equal to the current duration
-    if (distance <= 0.001f || time_to_target <= duration) {
-        position = target_location;
-        status = IMPACTED;
-        time_to_target = 0.0f;
-        return;
-    }
-
     // calculate the current speed of the projectile
+    if (time_to_target <= duration) return;
+
     speed = distance / time_to_target;
-    time_to_target -= duration; // reduce targets flight time
 
     vec2 normal = get_normal();
 
@@ -67,7 +57,29 @@ void Projectile::follow_target(float duration) {
 
     velocity = normal;
 
-    position = position + velocity * duration; // calculate new position
+    time_to_target -= duration; // reduce targets flight time
+}
+
+bool Projectile::check_collision() {
+    float distance_squared = get_distance_squared(target_location, position);
+
+    if (distance_squared <= 0.001 * 0.001) return true;
+
+    return false;
+}
+
+void Projectile::update_projectile(float duration) {
+    assert(duration > 0.0f);
+
+    follow_target(duration);
+    if (status != FLYING) return;
+    integrate(duration);
+    // if we have collided and there's still time left
+    if (check_collision() == true) {
+        time_to_target = 0.0f;
+        position = target_location;
+        status = IMPACTED;
+    }
 }
 
 
@@ -83,10 +95,16 @@ float Projectile::get_magnitude() {
 vec2 Projectile::get_normal() {
     vec2 directional_vector = get_directional_vector();
     float mag = get_magnitude();
+    assert(mag > 0.0f);
 
     return directional_vector / mag;
 }
 
+
+
+
+
+// Setters and Getters
 void Projectile::set_damage(float passed_damage) {
     damage = passed_damage;
 }
