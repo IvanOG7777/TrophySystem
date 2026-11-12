@@ -17,6 +17,8 @@ enum Status {
 class Projectile {
 private:
     float damage;
+    float speed;
+    float time_to_target;
     Status status;
     vec2 target_location;
     vec2 position;
@@ -28,10 +30,11 @@ public:
     // ~Projectile();
 
     void integrate(float duration);
+    void follow_target(float duration);
 
-    vec2 directional_vector();
-    float magnitude();
-    vec2 normal();
+    vec2 get_directional_vector();
+    float get_magnitude();
+    vec2 get_normal();
     void set_damage(float passed_damage);
 
     void set_position(float passed_x, float passed_y);

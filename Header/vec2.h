@@ -20,29 +20,31 @@ struct vec2 {
     }
 };
 
-inline vec2 operator+(vec2 &a, vec2 &b) {
+inline vec2 operator+(const vec2 &a, const vec2 &b) {
     return {a.x + b.x, a.y + b.y};
 }
 
-inline void operator+=(vec2 &a, vec2 &b) {
+inline vec2 operator+=(vec2 &a, vec2 &b) {
     a.x += b.x;
     a.y += b.y;
+    return a;
 }
 
 inline vec2 operator+=(vec2 &a, float val) {
     a.x += val;
     a.y += val;
+    return a;
 }
 
-inline vec2 operator-(vec2 &a, vec2 &b) {
+inline vec2 operator-(const vec2 &a, const vec2 &b) {
     return {a.x - b.x, a.y - b.y};
 }
 
-inline vec2 operator*(vec2 &a, vec2 &b) {
+inline vec2 operator*(const vec2 &a, const vec2 &b) {
     return {a.x * b.x, a.y * b.y};
 }
 
-inline vec2 operator*(vec2 &a, float val) {
+inline vec2 operator*(const vec2 &a, float val) {
     return {a.x * val, a.y * val};
 }
 
@@ -51,11 +53,11 @@ inline void operator*=(vec2 &a, float val) {
     a.y *= val;
 }
 
-inline vec2 operator/(vec2 &a, float val) {
+inline vec2 operator/(const vec2 &a, float val) {
     return {a.x / val, a.y / val};
 }
 
-inline float distance (vec2 &a, vec2 &b) {
+inline float get_distance_squared (vec2 &a, vec2 &b) {
     float x = a.x - b.x;
     float y = a.y - b.y;
 

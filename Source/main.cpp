@@ -16,7 +16,7 @@ int main() {
     vec2 b(10.f, 20.0);
 
     vec2 c = a + b;
-    float dist = distance(a, b);
+    float dist = get_distance_squared(a, b);
     std:: cout << "Distance is: " << dist << std:: endl;
 
     std:: cout << c.x << ", " << c.y << std:: endl;
