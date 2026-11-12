@@ -30,7 +30,7 @@ public:
     // ~Projectile();
 
     void integrate(float duration);
-    void follow_target(float duration);
+    void follow_target();
     bool check_collision();
     void update_projectile(float duration);
 

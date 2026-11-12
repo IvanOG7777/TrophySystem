@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <algorithm>
 #include "../Header/projectile.h"
 
 #include <ctime>
@@ -27,7 +28,7 @@ void Projectile::integrate(float duration) {
 
     if (Projectile::status != FLYING) return;
 
-    velocity = velocity +  acceleration * duration;
+    velocity = velocity + acceleration * duration;
 
     position = position + velocity * duration;
 }
@@ -36,18 +37,13 @@ vec2 Projectile::get_directional_vector() {
     return target_location - position;
 }
 
-void Projectile::follow_target(float duration) {
-    assert(duration > 0.0f);
-
+void Projectile::follow_target() {
     // make sure projectile is in the correct status
     if (status != FLYING) return;
 
     float distance_squared = get_distance_squared(target_location, position);
 
     float distance = std::sqrtf(distance_squared);
-
-    // calculate the current speed of the projectile
-    if (time_to_target <= duration) return;
 
     speed = distance / time_to_target;
 
@@ -56,29 +52,47 @@ void Projectile::follow_target(float duration) {
     normal *= speed; // calculate new velocity
 
     velocity = normal;
-
-    time_to_target -= duration; // reduce targets flight time
 }
 
 bool Projectile::check_collision() {
     float distance_squared = get_distance_squared(target_location, position);
-
-    if (distance_squared <= 0.001 * 0.001) return true;
-
-    return false;
+    return distance_squared <= 0.001 * 0.001;
 }
 
 void Projectile::update_projectile(float duration) {
     assert(duration > 0.0f);
 
-    follow_target(duration);
     if (status != FLYING) return;
-    integrate(duration);
-    // if we have collided and there's still time left
+
     if (check_collision() == true) {
-        time_to_target = 0.0f;
-        position = target_location;
         status = IMPACTED;
+        position = target_location;
+        time_to_target = 0.0f;
+        return;
+    }
+
+    if (time_to_target <= 0.0f) {
+        status = EXPIRED;
+        return;
+    }
+
+    // use min of either real time step or time_to_target as the step
+    float step = std::min(duration, time_to_target);
+
+    follow_target();
+    integrate(step);
+
+    time_to_target -= step;
+
+    if (check_collision()) {
+        status = IMPACTED;
+        position = target_location;
+        time_to_target = 0.0f;
+        return;
+    }
+
+    if (time_to_target <= 0.0f) {
+        status = EXPIRED;
     }
 }
 
