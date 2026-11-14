@@ -25,12 +25,19 @@ void Missile::integrate(float duration) {
     assert(duration > 0.0f);
     assert(mass > 0.0f);
 
-    auto drag_acceleration = -drag_constant * (velocity - wind_velocity);
+    auto relative_air_velocity = velocity - wind_velocity;
 
-    acceleration = (drag_acceleration + gravity_acceleration) / mass;
+    auto drag_force = -drag_constant * relative_air_velocity; // result is a force not acceleration
+    auto gravitational_force = gravity_acceleration * mass; // convert to force
+
+    auto force_net = gravitational_force + drag_force;
+
+    auto total_acceleration = force_net / mass;
+
+    acceleration = total_acceleration;
 
     auto new_velocity = velocity + (acceleration * duration);
-    auto new_position = position * (new_velocity * duration);
+    auto new_position = position + (new_velocity * duration);
 
     velocity = new_velocity;
     position = new_position;
