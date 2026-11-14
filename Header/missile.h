@@ -33,10 +33,11 @@ public:
     void follow_target();
     bool check_collision();
     void update_projectile(float duration);
+    vec2 quadratic_drag_force(vec2 &relative_force);
 
-    vec2 get_directional_vector();
-    float get_magnitude();
-    vec2 get_normal();
+    vec2 get_directional_vector(const vec2 &target, const vec2 &current_pos);
+    float get_magnitude(const vec2 &vector);
+    vec2 get_normal(const vec2 &target, const vec2 &current_pos);
     void set_damage(float passed_damage);
 
     void set_position(float passed_x, float passed_y);

@@ -21,13 +21,20 @@ Missile::Missile() {
     acceleration = {};
 }
 
+vec2 Missile::quadratic_drag_force(vec2 &relative_air_velocity) {
+    auto relative_force_magnitude = get_magnitude(relative_air_velocity);
+
+    return (-0.5f * air_density * drag_constant * cross_section_area * relative_force_magnitude) * relative_air_velocity;
+}
+
 void Missile::integrate(float duration) {
     assert(duration > 0.0f);
     assert(mass > 0.0f);
 
     auto relative_air_velocity = velocity - wind_velocity;
 
-    auto drag_force = -drag_constant * relative_air_velocity; // result is a force not acceleration
+    // auto drag_force = -drag_constant * relative_air_velocity; // result is a force not acceleration linear version
+    auto drag_force = quadratic_drag_force(relative_air_velocity);
     auto gravitational_force = gravity_acceleration * mass; // convert to force
 
     auto force_net = gravitational_force + drag_force;
@@ -43,22 +50,21 @@ void Missile::integrate(float duration) {
     position = new_position;
 }
 
-vec2 Missile::get_directional_vector() {
-    return target_location - position;
+vec2 Missile::get_directional_vector(const vec2 &target, const vec2 &current_pos) {
+    return target - current_pos;
 }
 
-float Missile::get_magnitude() {
-    vec2 dir_vec = get_directional_vector();
+float Missile::get_magnitude(const vec2 &vector) {
 
-    float x = dir_vec.x * dir_vec.x;
-    float y = dir_vec.y * dir_vec.y;
+    float x = vector.x * vector.x;
+    float y = vector.y * vector.y;
 
-    return sqrtf(x +y);
+    return sqrtf(x + y);
 }
 
-vec2 Missile::get_normal() {
-    vec2 directional_vector = get_directional_vector();
-    float mag = get_magnitude();
+vec2 Missile::get_normal(const vec2 &target, const vec2 &current_pos) {
+    vec2 directional_vector = get_directional_vector(target, current_pos);
+    float mag = get_magnitude(directional_vector);
     assert(mag > 0.0f);
 
     return directional_vector / mag;

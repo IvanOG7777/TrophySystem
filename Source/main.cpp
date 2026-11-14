@@ -13,8 +13,8 @@ int main() {
 
     missile.set_mass(2.0f);
     missile.set_position(0.0f, 10.0f);
-    missile.set_velocity(10.0f, 0.0f);
-    float duration = 0.1f;
+    missile.set_velocity(8.0f, 4.0f);
+    float duration = 0.5f;
 
 
     std:: cout << "Before Integration" << std:: endl;
@@ -24,7 +24,7 @@ int main() {
     std:: cout << "Acceleration: " << missile.acceleration.x << ", " << missile.acceleration.y << std:: endl;
     std:: cout << std:: endl;
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 2; i++) {
         missile.integrate(duration);
 
         std:: cout << "Mass: " << missile.mass << std:: endl;
