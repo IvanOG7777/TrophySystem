@@ -6,13 +6,13 @@ set (CMAKE_CXX_STANDARD 26)
 
 add_executable(main
         Header/gl_utils.h
-        Header/projectile.h
+        Header/missile.h
         Header/tank.h
         Header/trophy_system.h
         Header/vec2.h
 
         Source/gl_utils.cpp
-        Source/projectile.cpp
+        Source/missile.cpp
         Source/tank.cpp
         Source/trophy_system.cpp
 

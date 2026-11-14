@@ -14,11 +14,11 @@ enum Status {
     EXPIRED,
 };
 
-class Projectile {
-private:
+class Missile {
+public:
     float damage;
-    float speed;
     float time_to_target;
+    float mass;
     Status status;
     vec2 target_location;
     vec2 position;
@@ -26,7 +26,7 @@ private:
     vec2 acceleration;
 
 public:
-    Projectile();
+    Missile();
     // ~Projectile();
 
     void integrate(float duration);
@@ -57,6 +57,8 @@ public:
     float get_time_to_target();
 
     Status get_status();
+
+    void set_mass(float passed_mass);
 
 };
 

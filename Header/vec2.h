@@ -37,6 +37,14 @@ inline vec2 operator+=(vec2 &a, float val) {
 }
 
 inline vec2 operator-(const vec2 &a, const vec2 &b) {
+    if (b.x <= 0.0f && b.y >= 0.0f) {
+        return {a.x + b.x, a.y - b.y};
+    }
+
+    if (b.x >= 0.0f && b.y <= 0.0f) {
+        return {a.x - b.x, a.y + b.y};
+    }
+
     return {a.x - b.x, a.y - b.y};
 }
 
@@ -45,6 +53,10 @@ inline vec2 operator*(const vec2 &a, const vec2 &b) {
 }
 
 inline vec2 operator*(const vec2 &a, float val) {
+    return {a.x * val, a.y * val};
+}
+
+inline vec2 operator*(float val, const vec2 &a) {
     return {a.x * val, a.y * val};
 }
 

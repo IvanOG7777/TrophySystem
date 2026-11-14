@@ -4,37 +4,35 @@
 
 #include <iostream>
 
-#include "../Header/gl_utils.h"
-#include "../Header/vec2.h"
-#include "../Header/projectile.h"
-#include "../Header/tank.h"
-#include "../Header/trophy_system.h"
+#include "../Header/missile.h"
+
 
 int main() {
 
-    vec2 a(10.f, 20.0);
-    vec2 b(10000.f, 20000.0);
+    Missile missile;
 
-    vec2 c = a + b;
-    float dist = get_distance_squared(a, b);
-    std:: cout << "Distance is: " << dist << std:: endl;
+    missile.set_mass(2.0f);
+    missile.set_position(0.0f, 10.0f);
+    missile.set_velocity(8.0f, 0.0f);
+    float duration = 0.5f;
 
-    std:: cout << c.x << ", " << c.y << std:: endl;
 
-    Projectile projectile;
+    std:: cout << "Before Integration" << std:: endl;
+    std:: cout << std:: endl;
+    std:: cout << "Mass: " << missile.mass << std:: endl;
+    std:: cout << "Position: " << missile.position.x << ", " << missile.position.y << std:: endl;
+    std:: cout << "Velocity: " << missile.velocity.y << ", " << missile.velocity.y << std:: endl;
+    std:: cout << "Acceleration: " << missile.acceleration.y << ", " << missile.acceleration.y << std:: endl;
 
-    projectile.set_position(0,0);
-    projectile.set_velocity(2, 0);
-    projectile.set_acceleration(2,0);
-    projectile.set_target(a);
-    std:: cout << projectile.get_status() << std:: endl;
-    while (projectile.get_time_to_target() >= 0.16) {
-        projectile.update_projectile(0.16f);
-        std:: cout << "Projectile position: " << projectile.get_position().x << ", " << projectile.get_position().y << std:: endl;
-        std:: cout << "TTT: " << projectile.get_time_to_target();
-        std:: cout << std:: endl;
-    }
+    missile.integrate(duration);
+    std:: cout << std:: endl;
 
-    std:: cout << projectile.get_status() << std:: endl;
-    return 0;
+    std:: cout << "After Integration" << std:: endl;
+    std:: cout << std:: endl;
+    std:: cout << "Mass: " << missile.mass << std:: endl;
+    std:: cout << "Position: " << missile.position.x << ", " << missile.position.y << std:: endl;
+    std:: cout << "Velocity: " << missile.velocity.y << ", " << missile.velocity.y << std:: endl;
+    std:: cout << "Acceleration: " << missile.acceleration.y << ", " << missile.acceleration.y << std:: endl;
+
+
 }
