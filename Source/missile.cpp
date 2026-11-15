@@ -3,9 +3,8 @@
 //
 
 #include <cassert>
-#include <cmath>
+#include <iostream>
 #include <algorithm>
-#include <ctime>
 #include "../Header/world_variables.h"
 #include "../Header/missile.h"
 #include "../Header/vec2.h"
@@ -14,7 +13,9 @@ Missile::Missile() {
     damage = 0.0f;
     time_to_target = 0.0f;
     mass = 0.0f;
+    collision_radius = 2.0f;
     status = FLYING;
+    collision_type = NONE;
     target_location = {};
     position = {};
     velocity = {};
@@ -30,6 +31,10 @@ vec2 Missile::quadratic_drag_force(vec2 &relative_air_velocity) {
 void Missile::integrate(float duration) {
     assert(duration > 0.0f);
     assert(mass > 0.0f);
+    if (status != FLYING) {
+        std:: cout << "Missile isnt flying" << std::endl;
+        return;
+    };
 
     auto relative_air_velocity = velocity - wind_velocity;
 
@@ -48,6 +53,13 @@ void Missile::integrate(float duration) {
 
     velocity = new_velocity;
     position = new_position;
+}
+
+void Missile::update_projectile(float duration) {
+    if (status != FLYING) return;
+    check_collision();
+    integrate(duration);
+    check_collision();
 }
 
 vec2 Missile::get_directional_vector(const vec2 &target, const vec2 &current_pos) {
@@ -70,13 +82,25 @@ vec2 Missile::get_normal(const vec2 &target, const vec2 &current_pos) {
     return directional_vector / mag;
 }
 
-bool Missile::check_collision() {
-    // float radius = get_magnitude(position);
-
+void Missile::check_collision() {
     // for now check for ground, then check on tanks position
-    if (position.y <= 0.001) return true;
+    if (position.y <= 0.001) {
+        status = IMPACTED;
+        collision_type = GROUND;
+        position.y = 0.0f;
+        return;
+    }
 
-    return false;
+    float target_radius = 5.0f;
+    auto combined_radius_sum = target_radius + collision_radius;
+    auto combined_radius_squared = combined_radius_sum * combined_radius_sum;
+
+    auto distance_squared = get_distance_squared(target_location, position);
+
+    if (distance_squared <= combined_radius_squared) {
+        status = IMPACTED;
+        collision_type = TARGET;
+    }
 }
 
 

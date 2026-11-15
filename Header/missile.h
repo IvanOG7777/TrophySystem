@@ -14,12 +14,20 @@ enum Status {
     EXPIRED,
 };
 
+enum Collision_Type {
+    NONE,
+    GROUND,
+    TARGET
+};
+
 class Missile {
 public:
     float damage;
     float time_to_target;
     float mass;
+    float collision_radius;
     Status status;
+    Collision_Type collision_type;
     vec2 target_location;
     vec2 position;
     vec2 velocity;
@@ -31,7 +39,7 @@ public:
 
     void integrate(float duration);
     void follow_target();
-    bool check_collision();
+    void check_collision();
     void update_projectile(float duration);
     vec2 quadratic_drag_force(vec2 &relative_force);
 
