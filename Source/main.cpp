@@ -24,8 +24,12 @@ int main() {
     std:: cout << "Acceleration: " << missile.acceleration.x << ", " << missile.acceleration.y << std:: endl;
     std:: cout << std:: endl;
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 100; i++) {
         missile.integrate(duration);
+        if (missile.check_collision()) {
+            std:: cout << "Hit the ground" << std:: endl;
+            break;
+        }
 
         std:: cout << "Mass: " << missile.mass << std:: endl;
         std:: cout << "Position: " << missile.position.x << ", " << missile.position.y << std:: endl;

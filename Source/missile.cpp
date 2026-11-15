@@ -70,8 +70,14 @@ vec2 Missile::get_normal(const vec2 &target, const vec2 &current_pos) {
     return directional_vector / mag;
 }
 
+bool Missile::check_collision() {
+    // float radius = get_magnitude(position);
 
+    // for now check for ground, then check on tanks position
+    if (position.y <= 0.001) return true;
 
+    return false;
+}
 
 
 // Setters and Getters
