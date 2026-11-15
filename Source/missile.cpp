@@ -13,7 +13,7 @@ Missile::Missile() {
     damage = 0.0f;
     time_to_target = 0.0f;
     mass = 0.0f;
-    collision_radius = 2.0f;
+    collision_radius = 0.25f;
     status = FLYING;
     collision_type = NONE;
     target_location = {};
@@ -28,25 +28,14 @@ vec2 Missile::quadratic_drag_force(vec2 &relative_air_velocity) {
     return (-0.5f * air_density * drag_constant * cross_section_area * relative_force_magnitude) * relative_air_velocity;
 }
 
+// only change velocity and positions
 void Missile::integrate(float duration) {
     assert(duration > 0.0f);
     assert(mass > 0.0f);
     if (status != FLYING) {
-        std:: cout << "Missile isnt flying" << std::endl;
+        std:: cout << "Missile isn't flying" << std::endl;
         return;
-    };
-
-    auto relative_air_velocity = velocity - wind_velocity;
-
-    // auto drag_force = -drag_constant * relative_air_velocity; // result is a force not acceleration linear version
-    auto drag_force = quadratic_drag_force(relative_air_velocity);
-    auto gravitational_force = gravity_acceleration * mass; // convert to force
-
-    auto force_net = gravitational_force + drag_force;
-
-    auto total_acceleration = force_net / mass;
-
-    acceleration = total_acceleration;
+    }
 
     auto new_velocity = velocity + (acceleration * duration);
     auto new_position = position + (new_velocity * duration);
@@ -55,10 +44,32 @@ void Missile::integrate(float duration) {
     position = new_position;
 }
 
+// let this function handle total acceleration since we are calculating many forces here then finally updating acceleration
+void Missile::follow_target() {
+    assert(mass > 0.0f);
+    vec2 directional_vector = get_directional_vector(target_location, position);
+
+    vec2 relative_velocity = velocity - wind_velocity;
+
+    vec2 force_tracking = tracking_strength_constant * directional_vector;
+    vec2 force_drag = quadratic_drag_force(relative_velocity);
+    vec2 force_gravity = gravity_acceleration * mass;
+
+    vec2 total_force = force_tracking + force_drag + force_gravity;
+
+    vec2 total_acceleration = total_force / mass;
+
+    acceleration = total_acceleration;
+}
+
 void Missile::update_projectile(float duration) {
     if (status != FLYING) return;
     check_collision();
+    if (status != FLYING) return;
+
+    follow_target();
     integrate(duration);
+
     check_collision();
 }
 
@@ -91,7 +102,7 @@ void Missile::check_collision() {
         return;
     }
 
-    float target_radius = 5.0f;
+    float target_radius = 0.5f;
     auto combined_radius_sum = target_radius + collision_radius;
     auto combined_radius_squared = combined_radius_sum * combined_radius_sum;
 
