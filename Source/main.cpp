@@ -26,9 +26,10 @@ int main() {
     std:: cout << "Velocity: " << missile.velocity.x << ", " << missile.velocity.y << std:: endl;
     std:: cout << "Acceleration: " << missile.acceleration.x << ", " << missile.acceleration.y << std:: endl;
     std:: cout << "Status: " << missile.status << std:: endl;
+    std:: cout << "Collision type: " << missile.collision_type << std:: endl;
     std:: cout << std:: endl;
 
-    for (int i = 0; i < 15; i++) {
+    while (true) {
         if (missile.status != FLYING) break;
 
         vec2 new_position = target + target_velocity * duration;
@@ -43,6 +44,7 @@ int main() {
         std:: cout << "Velocity: " << missile.velocity.x << ", " << missile.velocity.y << std:: endl;
         std:: cout << "Acceleration: " << missile.acceleration.x << ", " << missile.acceleration.y << std:: endl;
         std:: cout << "Status: " << missile.status << std:: endl;
+        std:: cout << "Collision type: " << missile.collision_type << std:: endl;
         std:: cout << std:: endl;
     }
 
@@ -51,6 +53,7 @@ int main() {
     std:: cout << "Velocity: " << missile.velocity.x << ", " << missile.velocity.y << std:: endl;
     std:: cout << "Acceleration: " << missile.acceleration.x << ", " << missile.acceleration.y << std:: endl;
     std:: cout << "Status: " << missile.status << std:: endl;
+    std:: cout << "Collision type: " << missile.collision_type << std:: endl;
     std:: cout << std:: endl;
 
 

@@ -51,12 +51,14 @@ void Missile::follow_target() {
 
     vec2 relative_velocity = velocity - wind_velocity;
 
+    // get all forces
     vec2 force_tracking = tracking_strength_constant * directional_vector;
     vec2 force_drag = quadratic_drag_force(relative_velocity);
     vec2 force_gravity = gravity_acceleration * mass;
 
     vec2 total_force = force_tracking + force_drag + force_gravity;
 
+    // turn force into acceleration
     vec2 total_acceleration = total_force / mass;
 
     acceleration = total_acceleration;
